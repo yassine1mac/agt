@@ -1,0 +1,51 @@
+<style>
+.navbar-custom {
+    background-color: #002f6c;
+    padding: 10px 20px; /* Reduced padding to decrease overall height */
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease-in-out;
+}
+.navbar-custom.scrolled {
+    background-color: #002b5e;
+}
+.logo-container {
+    padding: 5px; /* Reduced padding for the logo container */
+    background: rgba(255, 215, 0, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.logo-img {
+    max-height: 50px; /* Reduced logo size to ensure it fits within the navbar */
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.5));
+}
+.navbar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-size: 1.1em;
+    letter-spacing: 0.05em;
+}
+.navbar-nav .nav-link {
+    color: #ffd700 !important;
+    font-weight: 500;
+    transition: color 0.3s, background-color 0.3s;
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+.navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+    background-color: rgba(255, 215, 0, 0.2);
+}
+.navbar-toggler {
+    border: none;
+    outline: none;
+}
+.navbar-toggler-icon {
+    background-image: url('data:image/png;base64,{logo_base64}');
+}
+</style>
+

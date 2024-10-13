@@ -384,7 +384,5 @@ zict @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_29a3x
 zipp @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_31jm3q76eq/croot/zipp_1704206913245/work
 zope.interface @ file:///Users/ktietz/ci_310/zope.interface_1643972839616/work
 zstandard @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_054juzz3it/croot/zstandard_1714677666952/work
-streamlit==1.15.0
-pandas==1.5.3
-aiobotocore==2.0.2
+
 

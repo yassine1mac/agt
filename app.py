@@ -390,14 +390,11 @@ with st.container():
         </div>
     """, unsafe_allow_html=True)
 
-#Gallery 
 
-import streamlit as st
-from PIL import Image
-import base64
-import io
+# Gallery 
 
-# Function to convert image to base64
+
+# Function to convert image to base64 (for gallery images)
 def image_to_base64(img):
     buffered = io.BytesIO()
     img.save(buffered, format="JPEG")
@@ -405,108 +402,82 @@ def image_to_base64(img):
 
 # Load custom CSS for styling
 def load_css():
-    st.markdown(
-        """
+    css = """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap');
 
         body {
             font-family: 'Open Sans', sans-serif;
+            background-color: #f8f8f8;
         }
 
         .catalogue-title {
             font-family: 'Playfair Display', serif;
             font-size: 3em;
-            color: #FFD700;
+            color: #333;
             text-align: center;
             margin-bottom: 40px;
         }
 
         .catalogue-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            background-color: #282828;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 800px;
-            cursor: pointer;
-            position: relative;
+            text-align: center;
         }
 
-        .catalogue-cover {
-            width: 100%;
-            height: 500px;
-            border: 5px solid #FFD700;
-            border-radius: 15px;
-            background: url('PLACEHOLDER') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .catalogue-cover .button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 30px;
-            background-color: #FFD700;
-            color: #282828;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 1.2em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .catalogue-cover .button:hover {
-            background-color: #e5c400;
-        }
-
-        .full-gallery {
+        .gallery {
             display: none;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding-top: 20px;
             opacity: 0;
             transition: opacity 0.5s ease;
         }
 
-        .full-gallery.show {
+        .gallery.show {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             opacity: 1;
         }
 
-        .swiper-container {
-            width: 100%;
-            height: 100%;
+        .gallery-image {
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+            width: 200px;
+            margin: 10px;
+            transition: transform 0.3s ease;
         }
 
-        .swiper-slide img {
-            width: 100%;
-            height: auto;
-            border-radius: 15px;
+        .gallery-image:hover {
+            transform: scale(1.05);
         }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #FFD700;
+            color: #333;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #e6be00;
+        }
+
         </style>
-        """,
-        unsafe_allow_html=True
-    )
+    """
+    st.markdown(css, unsafe_allow_html=True)
 
-# Load custom CSS
+# Load CSS for styling
 load_css()
 
-# Title of the catalogue
+# Catalogue title
 st.markdown('<div class="catalogue-title">Our Luxurious Trips</div>', unsafe_allow_html=True)
 
 # Define image paths
@@ -519,54 +490,40 @@ gallery_image_paths = [
     "/Users/yassine/Downloads/WhatsApp Image 2024-07-01 at 17.36.32.jpeg",
 ]
 
-# Catalogue container with cover image
+# Display cover image with Streamlit's st.image for proper rendering
 with st.container():
-    cover_img_url = f"url({cover_image_path})"
-    st.markdown(f"""
-        <div class="catalogue-container">
-            <div class="catalogue-cover" style="background-image: {cover_img_url};">
-                <button class="button" id="toggle-gallery">View Gallery</button>
-            </div>
-            <div class="full-gallery" id="gallery">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-    """, unsafe_allow_html=True)
+    st.image(cover_image_path, caption="Cover Image", use_column_width=True)
 
-    # Display full gallery with swipe functionality
+    # Toggle button for gallery
+    st.markdown('<button class="button" id="toggle-gallery">View Gallery</button>', unsafe_allow_html=True)
+
+    # Start gallery (hidden initially)
+    st.markdown('<div class="gallery" id="gallery">', unsafe_allow_html=True)
+
+    # Display gallery images
     for img_path in gallery_image_paths:
         img = Image.open(img_path)
         img_base64 = image_to_base64(img)
         st.markdown(f"""
-            <div class="swiper-slide">
-                <img src="data:image/jpeg;base64,{img_base64}" alt="Gallery Image">
-            </div>
+            <img src="data:image/jpeg;base64,{img_base64}" class="gallery-image" alt="Gallery Image">
         """, unsafe_allow_html=True)
 
-    st.markdown('</div></div></div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# Include Swiper.js for swipe functionality
+# JavaScript to toggle gallery visibility
 st.markdown("""
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var swiper = new Swiper('.swiper-container', {
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-            });
-            
-            document.getElementById('toggle-gallery').addEventListener('click', function () {
-                var gallery = document.getElementById('gallery');
+            var galleryButton = document.getElementById('toggle-gallery');
+            var gallery = document.getElementById('gallery');
+
+            galleryButton.addEventListener('click', function () {
                 if (gallery.classList.contains('show')) {
                     gallery.classList.remove('show');
+                    galleryButton.textContent = 'View Gallery';
                 } else {
                     gallery.classList.add('show');
+                    galleryButton.textContent = 'Hide Gallery';
                 }
             });
         });
@@ -574,6 +531,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+
+    
 
 
 def local_css():
